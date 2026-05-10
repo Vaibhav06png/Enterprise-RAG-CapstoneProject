@@ -1,0 +1,13 @@
+_pycache_/
+*.pyc
+.venv/
+venv/
+.env
+*.faiss
+*.pkl
+vectorstores/**/index.faiss
+vectorstores/**/index.pkl
+.DS_Store
+.idea/
+.vscode/
+*.FAISS

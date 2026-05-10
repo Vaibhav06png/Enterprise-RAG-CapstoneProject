@@ -1,0 +1,37 @@
+# --- Core RAG + LangChain ---
+langchain==0.3.7
+langchain-community==0.3.5
+langchain-openai==0.2.5
+langchain-huggingface==0.1.2
+
+# --- Vector DB + Embeddings ---
+faiss-cpu==1.9.0
+sentence-transformers==3.2.1
+
+# --- Hybrid search (BM25 keyword search) ---
+rank_bm25==0.2.2
+
+# --- Multi-Agent Framework ---
+crewai==0.80.0
+
+# --- LLM Provider ---
+openai==1.54.3
+
+# --- Data + Dataset Loading ---
+pandas==2.2.3
+datasets==3.1.0
+
+# --- API Backend ---
+fastapi==0.115.4
+uvicorn==0.32.0
+pydantic==2.9.2
+
+# --- Frontend ---
+streamlit==1.40.0
+requests==2.32.3
+
+# --- Env vars ---
+python-dotenv==1.0.1
+
+# --- Evaluation ---
+rouge-score==0.1.2
