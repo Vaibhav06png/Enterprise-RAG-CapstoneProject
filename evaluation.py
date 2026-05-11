@@ -1,15 +1,13 @@
-# =====================================================
-# evaluation.py
-# -----------------------------------------------------
+# EVALUATION
+
 # Compares two systems on a few sample customer queries:
-#
+
 #   (A) Baseline RAG         -> just retrieval + LLM
 #   (B) Agentic RAG (CrewAI) -> 4-agent workflow
 #
 # Metrics:
 #   * ROUGE-1, ROUGE-L (overlap with the reference answer)
 #   * Relevance score (very simple: keyword overlap with retrieved chunks)
-# =====================================================
 
 import pandas as pd
 from rouge_score import rouge_scorer
@@ -18,7 +16,6 @@ from app.rag import rag_pipeline
 from app.agents.agents import run_agentic_workflow
 
 
-# In a real project you'd sample ~50-100 rows from the CSV.
 EVAL_SAMPLES = [
     {
         "query": "How do I cancel my order?",
@@ -69,12 +66,12 @@ def evaluate():
         q, ref = sample["query"], sample["reference"]
         print(f"\n=== Query: {q} ===")
 
-        # --- Baseline RAG ---
+        # Baseline RAG :-
         base = baseline_rag(q)
         base_scores = scorer.score(ref, base["answer"])
         base_rel = simple_relevance(base["answer"], base["sources"])
 
-        # --- Agentic ---
+        # Agentic:-
         agent = run_agentic_workflow(q)
         agent_scores = scorer.score(ref, agent["final_response"])
         agent_rel = simple_relevance(agent["final_response"], agent["retrieved_sources"])
@@ -91,10 +88,10 @@ def evaluate():
         })
 
     df = pd.DataFrame(rows)
-    print("\n=== EVALUATION RESULTS ===")
+    print("\n EVALUATION RESULTS :- ")
     print(df.to_string(index=False))
 
-    print("\n=== AVERAGES ===")
+    print("\n AVERAGES :- ")
     print(df.drop(columns=["query", "escalated"]).mean(numeric_only=True).round(3))
 
     df.to_csv("evaluation_results.csv", index=False)

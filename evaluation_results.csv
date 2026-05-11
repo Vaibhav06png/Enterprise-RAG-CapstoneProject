@@ -1,0 +1,4 @@
+query,baseline_rouge1,baseline_rougeL,baseline_relevance,agentic_rouge1,agentic_rougeL,agentic_relevance,escalated
+How do I cancel my order?,0.163,0.146,1.0,0.164,0.148,0.958,False
+I want to get a refund for a damaged product.,0.241,0.12,0.83,0.241,0.12,0.83,True
+How can I update my shipping address?,0.339,0.339,0.938,0.339,0.339,0.938,False

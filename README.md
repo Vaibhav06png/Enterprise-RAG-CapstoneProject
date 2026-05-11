@@ -134,13 +134,3 @@ Pushing to `main` triggers `.github/workflows/ci-cd.yml`, which:
 3. Builds the Docker image to verify it builds cleanly
 
 ---
-
-## Design Choices (Why It's Kept Simple)
-
-- **Functional style** — no unnecessary classes or factories
-- **No logger files** — just `print()` for clarity
-- **One Dockerfile** — no multi-stage / no docker-compose
-- **Module-level globals** for the RAG pipeline — easier to debug than dependency injection
-- **CrewAI tasks run sequentially** — easier to trace than hierarchical/parallel modes
-
-The goal: *advanced enough for a capstone, simple enough to read top-to-bottom.*

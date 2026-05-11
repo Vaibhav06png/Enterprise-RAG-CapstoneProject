@@ -1,14 +1,12 @@
-# =====================================================
-# agents.py
-# -----------------------------------------------------
+# Agents 
 # Multi-Agent workflow built with CrewAI.
-#
+
 # Agents:
 #   1. Query Understanding Agent  -> intent + category
 #   2. RAG Retrieval Agent        -> uses our RAG tool
 #   3. Sentiment Analysis Agent   -> urgency / emotion
 #   4. Escalation Agent           -> human handoff decision
-#
+
 # All four agents share the SAME RAG pipeline as a tool.
 
 import os
@@ -23,12 +21,10 @@ from app.rag import rag_pipeline
 load_dotenv()
 
 
-# -----------------------------------------------------
 # RAG exposed as a CrewAI Tool
-# -----------------------------------------------------
 # @tool turns a plain function into something agents can call.
 # Any agent we attach this to will be able to retrieve context.
-# -----------------------------------------------------
+
 @tool("rag_search")
 def rag_search(query: str) -> str:
     """
@@ -45,14 +41,11 @@ def rag_search(query: str) -> str:
     return f"ANSWER:\n{result['answer']}\n\nTOP SOURCES:\n{sources_preview}"
 
 
-# -----------------------------------------------------
-# Build the 4 agents
-# -----------------------------------------------------
+# Building the 4 agents
+
 def build_agents():
     """Create and return the four collaborating agents."""
 
-    # CrewAI uses the OPENAI_API_KEY from env automatically.
-    # We just pick the model name.
     llm_name = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     # 1. Understands what the customer actually wants
@@ -69,7 +62,7 @@ def build_agents():
         llm=llm_name,
     )
 
-    # 2. Actually fetches context from the knowledge base
+    # 2. Actually fetches context from the knowledge base RAG
     retrieval_agent = Agent(
         role="Knowledge Base Retrieval Agent",
         goal="Use the rag_search tool to find the most relevant support context and draft a grounded answer.",
@@ -115,9 +108,9 @@ def build_agents():
     return query_agent, retrieval_agent, sentiment_agent, escalation_agent
 
 
-# -----------------------------------------------------
+
 # Build the tasks (one per agent) and run the Crew
-# -----------------------------------------------------
+
 def run_agentic_workflow(user_query: str) -> dict:
     """
     Run the full 4-agent pipeline on a customer query.
@@ -125,7 +118,7 @@ def run_agentic_workflow(user_query: str) -> dict:
     """
     query_agent, retrieval_agent, sentiment_agent, escalation_agent = build_agents()
 
-    # ---- Task 1: classify the query ----
+    # Task 1: classify the query
     task_understand = Task(
         description=(
             f"Customer query: '{user_query}'.\n"
@@ -136,7 +129,7 @@ def run_agentic_workflow(user_query: str) -> dict:
         agent=query_agent,
     )
 
-    # ---- Task 2: retrieve + draft a grounded answer ----
+    # Task 2: retrieve + draft a grounded answer
     task_retrieve = Task(
         description=(
             f"Customer query: '{user_query}'.\n"
@@ -148,7 +141,7 @@ def run_agentic_workflow(user_query: str) -> dict:
         agent=retrieval_agent,
     )
 
-    # ---- Task 3: sentiment + urgency ----
+    # Task 3: sentiment + urgency
     task_sentiment = Task(
         description=(
             f"Customer query: '{user_query}'.\n"
@@ -159,7 +152,7 @@ def run_agentic_workflow(user_query: str) -> dict:
         agent=sentiment_agent,
     )
 
-    # ---- Task 4: escalation decision ----
+    #Task 4: escalation decision
     task_escalate = Task(
         description=(
             "Based on the retrieval result and the sentiment analysis, "
@@ -173,18 +166,18 @@ def run_agentic_workflow(user_query: str) -> dict:
         context=[task_retrieve, task_sentiment],
     )
 
-    # ---- Assemble the Crew ----
+    # Assemble the Crew
     crew = Crew(
         agents=[query_agent, retrieval_agent, sentiment_agent, escalation_agent],
         tasks=[task_understand, task_retrieve, task_sentiment, task_escalate],
-        process=Process.sequential,  # run tasks one after another (simple + debuggable)
+        process=Process.sequential,  # run tasks one after another(sequentially)
         verbose=False,
     )
 
     # Run the crew
     crew_output = crew.kickoff()
 
-    # Also fetch raw RAG sources directly (so the UI can show them)
+    # Also fetch raw RAG sources directly 
     rag_result = rag_pipeline.generate_answer(user_query)
 
     # Pull the per-task outputs out of CrewAI's result object
@@ -207,9 +200,8 @@ def run_agentic_workflow(user_query: str) -> dict:
     }
 
 
-# -----------------------------------------------------
 # Quick local test
-# -----------------------------------------------------
+
 if __name__ == "__main__":
     # Make sure RAG is initialized first
     rag_pipeline.build_rag_pipeline()

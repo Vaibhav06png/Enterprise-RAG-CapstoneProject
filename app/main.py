@@ -1,12 +1,9 @@
-# =====================================================
 # main.py  --  FastAPI REST API
-# -----------------------------------------------------
 # Exposes the multi-agent RAG workflow over HTTP.
-#
+
 # Endpoints:
 #   GET  /       -> health check
 #   POST /ask    -> run the full agentic workflow
-# =====================================================
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -29,17 +26,13 @@ class Query(BaseModel):
     query: str
 
 
-# -----------------------------------------------------
 # Health check
-# -----------------------------------------------------
 @app.get("/")
 def home():
     return {"message": "Enterprise RAG + CrewAI API is running"}
 
 
-# -----------------------------------------------------
 # Main endpoint: run the multi-agent workflow
-# -----------------------------------------------------
 @app.post("/ask")
 def ask(q: Query):
     """

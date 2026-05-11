@@ -1,9 +1,8 @@
-# =====================================================
-# streamlit.py  --  Minimal Streamlit UI
-# -----------------------------------------------------
+# Streamlit.py  --  Minimal Streamlit UI
+
 # Just a text box, a submit button, and the response.
 # It calls the FastAPI backend with requests.post().
-# =====================================================
+
 
 import requests
 import streamlit as st
@@ -27,11 +26,11 @@ if st.button("Ask"):
                 resp = requests.post(API_URL, json={"query": user_query}, timeout=120)
                 data = resp.json()
 
-                # --- Response ---
+                # Response
                 st.subheader("Response")
                 st.write(data.get("response", "No response"))
 
-                # --- Escalation flag ---
+                # Escalation flag
                 if data.get("escalate_flag"):
                     st.error("This issue has been flagged for human escalation.")
                 else:
@@ -40,7 +39,7 @@ if st.button("Ask"):
                 # Show sentiment line (raw)
                 st.caption(data.get("sentiment", ""))
 
-                # --- Retrieved documents ---
+                # Retrieved documents
                 st.subheader("Retrieved Documents")
                 for i, src in enumerate(data.get("sources", []), 1):
                     with st.expander(f"Source {i} — {src['metadata'].get('category', 'general')}"):
