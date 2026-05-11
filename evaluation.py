@@ -18,7 +18,6 @@ from app.rag import rag_pipeline
 from app.agents.agents import run_agentic_workflow
 
 
-# A small evaluation set drawn from the dataset's style.
 # In a real project you'd sample ~50-100 rows from the CSV.
 EVAL_SAMPLES = [
     {

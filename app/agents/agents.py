@@ -10,7 +10,6 @@
 #   4. Escalation Agent           -> human handoff decision
 #
 # All four agents share the SAME RAG pipeline as a tool.
-# =====================================================
 
 import os
 from dotenv import load_dotenv
