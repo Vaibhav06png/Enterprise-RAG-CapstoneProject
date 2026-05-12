@@ -29,7 +29,7 @@ load_dotenv()
 
 DATA_PATH = "data/customer_support_data.csv"
 VECTORSTORE_PATH = "vectorstore/faiss_store"
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+EMBEDDING_MODEL = r"D:\OneDrive - Coforge Limited\Documents\Dataset_dowload bitext and Hugging face model\c9745ed1d9f207416be6d2e6f8de32d1f16199bf 2\c9745ed1d9f207416be6d2e6f8de32d1f16199bf"
 
 
 faiss_store = None                 # for semantic similarity search
